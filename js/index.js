@@ -54,21 +54,17 @@ let users = [
     "phone": "+1 (837) 586-3283",
     "address": "314 Dunne Place, Bawcomville, Guam, 9053"
     }
-    ]
+];
 
-function sum(arr) {
-    const rep = /\$|,/g;
-    let salar = [];
-    let phonNum = [];
-    let result = 0;
-    for (index = 0; index < arr.length; index++){
-        salar.push(Number(arr[index].balance.replace(rep, '')));
-        if (arr[index].balance > '$2,000') {
-            phonNum.push(arr[index].phone);
-        }
-    }
-    result = salar.reduce((el, acc) => { return el + acc });
+const filteredNumbers = users
+    .filter(user => parseFloat(user.balance.replace(/[^0-9.-]+/g,"")) > 2000)
+    .map(user => user.phone);
 
-    return (`телефонні номерa, у яких баланс більше 2000 доларів - ${phonNum} сумма балансу- ${result.toFixed(2)}`);
-}
-console.log(sum(users));
+console.log(filteredNumbers);
+
+const totalBalance = users.reduce((sum, user) => {
+    const balance = parseFloat(user.balance.replace(/[^0-9.-]+/g,""));
+    return sum + balance;
+}, 0);
+
+console.log(`Total Balance: $${totalBalance.toFixed(2)}`);
